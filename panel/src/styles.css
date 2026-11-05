@@ -1,0 +1,163 @@
+:root {
+  color: #e7e1d5;
+  background: #14120e;
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(212, 146, 58, 0.16), transparent 32%),
+    #14120e;
+}
+
+button,
+.mono {
+  font-family: "IBM Plex Mono", "ui-monospace", "SFMono-Regular", Menlo, Consolas, monospace;
+}
+
+button {
+  background: #d4923a;
+  color: #1a140c;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.7rem 1.1rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+button.secondary {
+  background: transparent;
+  color: #e7e1d5;
+  border: 1px solid #5c5348;
+}
+
+main {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-end;
+  margin-bottom: 1.25rem;
+}
+
+h1 {
+  margin: 0;
+  font-size: 2.4rem;
+  font-weight: 500;
+  letter-spacing: -0.04em;
+}
+
+header p,
+.slot span,
+.column h2 {
+  margin: 0.2rem 0 0;
+  color: #b3a898;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.toolbar {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.status {
+  min-width: 7rem;
+  text-align: right;
+  color: #d4923a;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr 1fr;
+  gap: 1rem;
+}
+
+.column,
+.card {
+  background: rgba(28, 25, 21, 0.92);
+  border: 1px solid #3a342c;
+  border-radius: 18px;
+  padding: 1rem;
+  min-height: 18rem;
+}
+
+.time {
+  font-size: 4.5rem;
+  line-height: 0.9;
+  margin: 0.6rem 0;
+  letter-spacing: -0.06em;
+}
+
+.time.corrected {
+  color: #f0c27a;
+}
+
+.slots {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.slot strong {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 1.15rem;
+  font-weight: 500;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0.8rem 0 0;
+}
+
+li {
+  padding: 0.45rem 0;
+  border-top: 1px solid #343027;
+}
+
+li.partial {
+  color: #8d8478;
+}
+
+.card {
+  margin-top: 1rem;
+  min-height: 0;
+}
+
+.card ul {
+  display: grid;
+  gap: 0.4rem;
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
