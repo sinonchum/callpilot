@@ -11,6 +11,27 @@
 
 活动页：https://luma.com/hz9db5u9
 
-## 现在仓库里有什么
+## 现在能跑什么
 
-只有文档。产品代码打算在现场写；赛前是否允许写代码还没核实，所以赛前只做 key、root 音频和 adb 探针。模块目录写在开发计划里，还没有建。
+不插手机、不配 API key：
+
+```bash
+cd laptop
+python3 -m pip install -e ".[dev]"
+python3 -m pytest
+python3 -m orchestrator.demo
+```
+
+演示会走完「假通话转写 → 抽出 15:00 的 POC → 假点击保存 → 改口成 16:00 → 读回假日历 → 撤销提醒」，成功时打印 `[ok] POC at 16:00, reminder undone`。
+
+面板在 `panel/`（`npm ci && npm run dev`，然后点「回放剧本」）。契约和模块说明在 [laptop/README.md](laptop/README.md)。
+
+## 还要手机或真 key 的部分
+
+- root 通话音频和 PCM 推流：只有 [phone/README.md](phone/README.md) 和 `phone/app/AudioPump.kt` 草稿，没有 Gradle 工程
+- `CALLPILOT_EXECUTOR=adb` 才会执行 adb；默认执行器是内存里的假日历
+- `GLADIA_API_KEY` 目前只够创建 live 会话，浏览器式 WebSocket 推流还没接上
+- `HAI_API_KEY` 才会把截图发给 Holo。默认是录好的「点保存」脚本
+- `INTENT_API_KEY` 才会调用文本模型。默认是针对演示台词的规则抽取器
+
+幻灯片和备份视频还没做。mock 跑出来的步数不要写进 pitch。

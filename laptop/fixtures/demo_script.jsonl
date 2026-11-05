@@ -1,0 +1,3 @@
+{"v":1,"type":"call.started","ts":"2026-11-08T09:00:00+01:00","call_id":"call_demo","capture":"voice_call","timezone":"Europe/Paris"}
+{"v":1,"type":"transcript.final","ts":"2026-11-08T09:00:08+01:00","call_id":"call_demo","utterance_id":"u1","is_final":true,"speaker":"them","text":"On se voit mardi prochain à 15h à Station F pour le POC… and can you send me the deck before Thursday?","language":"fr","confidence":0.9}
+{"v":1,"type":"transcript.final","ts":"2026-11-08T09:00:16+01:00","call_id":"call_demo","utterance_id":"u2","is_final":true,"speaker":"them","text":"Ah non, plutôt 16h.","language":"fr","confidence":0.9}

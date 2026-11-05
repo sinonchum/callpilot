@@ -1,0 +1,33 @@
+[project]
+name = "callpilot-laptop"
+version = "0.1.0"
+description = "CallPilot laptop-side mock pipeline for the hackathon"
+requires-python = ">=3.11"
+dependencies = [
+  "pydantic==2.14.2",
+  "websockets>=12,<16",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[project.scripts]
+callpilot-demo = "orchestrator.demo:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = [
+  "orchestrator*",
+  "stt*",
+  "intent*",
+  "planner*",
+  "confirm*",
+  "gui*",
+  "verify*",
+  "executor*",
+  "contracts*",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

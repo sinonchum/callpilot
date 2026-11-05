@@ -1,0 +1,1381 @@
+{
+  "transcript.final": {
+    "properties": {
+      "v": {
+        "default": 1,
+        "title": "V",
+        "type": "integer"
+      },
+      "type": {
+        "enum": [
+          "transcript.partial",
+          "transcript.final"
+        ],
+        "title": "Type",
+        "type": "string"
+      },
+      "ts": {
+        "title": "Ts",
+        "type": "string"
+      },
+      "call_id": {
+        "title": "Call Id",
+        "type": "string"
+      },
+      "utterance_id": {
+        "title": "Utterance Id",
+        "type": "string"
+      },
+      "is_final": {
+        "title": "Is Final",
+        "type": "boolean"
+      },
+      "text": {
+        "title": "Text",
+        "type": "string"
+      },
+      "channel": {
+        "anyOf": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Channel"
+      },
+      "speaker": {
+        "default": "unknown",
+        "enum": [
+          "me",
+          "them",
+          "unknown"
+        ],
+        "title": "Speaker",
+        "type": "string"
+      },
+      "language": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Language"
+      },
+      "start": {
+        "anyOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Start"
+      },
+      "end": {
+        "anyOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "End"
+      },
+      "confidence": {
+        "anyOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Confidence"
+      }
+    },
+    "required": [
+      "type",
+      "ts",
+      "call_id",
+      "utterance_id",
+      "is_final",
+      "text"
+    ],
+    "title": "TranscriptEvent",
+    "type": "object"
+  },
+  "intent.patch": {
+    "$defs": {
+      "UpsertOp": {
+        "properties": {
+          "op": {
+            "const": "upsert",
+            "default": "upsert",
+            "title": "Op",
+            "type": "string"
+          },
+          "entity": {
+            "enum": [
+              "event",
+              "reminder",
+              "note"
+            ],
+            "title": "Entity",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "fields": {
+            "additionalProperties": true,
+            "title": "Fields",
+            "type": "object"
+          },
+          "reason": {
+            "default": "extract",
+            "enum": [
+              "extract",
+              "correction"
+            ],
+            "title": "Reason",
+            "type": "string"
+          },
+          "evidence": {
+            "default": "",
+            "title": "Evidence",
+            "type": "string"
+          },
+          "confidence": {
+            "default": 0.9,
+            "title": "Confidence",
+            "type": "number"
+          },
+          "field_confidence": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "title": "Field Confidence",
+            "type": "object"
+          }
+        },
+        "required": [
+          "entity",
+          "id"
+        ],
+        "title": "UpsertOp",
+        "type": "object"
+      }
+    },
+    "properties": {
+      "v": {
+        "default": 1,
+        "title": "V",
+        "type": "integer"
+      },
+      "type": {
+        "const": "intent.patch",
+        "default": "intent.patch",
+        "title": "Type",
+        "type": "string"
+      },
+      "ts": {
+        "title": "Ts",
+        "type": "string"
+      },
+      "call_id": {
+        "title": "Call Id",
+        "type": "string"
+      },
+      "utterance_id": {
+        "title": "Utterance Id",
+        "type": "string"
+      },
+      "ops": {
+        "items": {
+          "$ref": "#/$defs/UpsertOp"
+        },
+        "title": "Ops",
+        "type": "array"
+      }
+    },
+    "required": [
+      "ts",
+      "call_id",
+      "utterance_id"
+    ],
+    "title": "IntentPatch",
+    "type": "object"
+  },
+  "intent.snapshot": {
+    "$defs": {
+      "CalendarFields": {
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "title": {
+            "default": "",
+            "title": "Title",
+            "type": "string"
+          },
+          "date": {
+            "default": "",
+            "title": "Date",
+            "type": "string"
+          },
+          "time": {
+            "default": "",
+            "title": "Time",
+            "type": "string"
+          },
+          "timezone": {
+            "default": "Europe/Paris",
+            "title": "Timezone",
+            "type": "string"
+          },
+          "duration_min": {
+            "default": 60,
+            "title": "Duration Min",
+            "type": "integer"
+          },
+          "location": {
+            "default": "",
+            "title": "Location",
+            "type": "string"
+          },
+          "beginTime": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Begintime"
+          },
+          "endTime": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Endtime"
+          },
+          "status": {
+            "default": "proposed",
+            "enum": [
+              "proposed",
+              "corrected",
+              "executed",
+              "reverted"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "stability": {
+            "default": "preview",
+            "enum": [
+              "preview",
+              "stable"
+            ],
+            "title": "Stability",
+            "type": "string"
+          },
+          "fields": {
+            "additionalProperties": {
+              "$ref": "#/$defs/FieldState"
+            },
+            "title": "Fields",
+            "type": "object"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "title": "CalendarFields",
+        "type": "object"
+      },
+      "Correction": {
+        "properties": {
+          "target_id": {
+            "title": "Target Id",
+            "type": "string"
+          },
+          "field": {
+            "title": "Field",
+            "type": "string"
+          },
+          "from": {
+            "title": "From",
+            "type": "string"
+          },
+          "to": {
+            "title": "To",
+            "type": "string"
+          },
+          "utterance_id": {
+            "title": "Utterance Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "target_id",
+          "field",
+          "from",
+          "to",
+          "utterance_id"
+        ],
+        "title": "Correction",
+        "type": "object"
+      },
+      "FieldState": {
+        "properties": {
+          "stability": {
+            "enum": [
+              "preview",
+              "stable"
+            ],
+            "title": "Stability",
+            "type": "string"
+          },
+          "confidence": {
+            "title": "Confidence",
+            "type": "number"
+          }
+        },
+        "required": [
+          "stability",
+          "confidence"
+        ],
+        "title": "FieldState",
+        "type": "object"
+      },
+      "NoteFields": {
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "text": {
+            "default": "",
+            "title": "Text",
+            "type": "string"
+          },
+          "stability": {
+            "default": "preview",
+            "enum": [
+              "preview",
+              "stable"
+            ],
+            "title": "Stability",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "title": "NoteFields",
+        "type": "object"
+      },
+      "ReminderFields": {
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "title": {
+            "default": "",
+            "title": "Title",
+            "type": "string"
+          },
+          "date": {
+            "default": "",
+            "title": "Date",
+            "type": "string"
+          },
+          "time": {
+            "default": "",
+            "title": "Time",
+            "type": "string"
+          },
+          "beginTime": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Begintime"
+          },
+          "endTime": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Endtime"
+          },
+          "stability": {
+            "default": "preview",
+            "enum": [
+              "preview",
+              "stable"
+            ],
+            "title": "Stability",
+            "type": "string"
+          },
+          "fields": {
+            "additionalProperties": {
+              "$ref": "#/$defs/FieldState"
+            },
+            "title": "Fields",
+            "type": "object"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "title": "ReminderFields",
+        "type": "object"
+      }
+    },
+    "properties": {
+      "v": {
+        "default": 1,
+        "title": "V",
+        "type": "integer"
+      },
+      "type": {
+        "const": "intent.snapshot",
+        "default": "intent.snapshot",
+        "title": "Type",
+        "type": "string"
+      },
+      "ts": {
+        "title": "Ts",
+        "type": "string"
+      },
+      "call_id": {
+        "title": "Call Id",
+        "type": "string"
+      },
+      "revision": {
+        "default": 0,
+        "title": "Revision",
+        "type": "integer"
+      },
+      "preview": {
+        "default": "",
+        "title": "Preview",
+        "type": "string"
+      },
+      "event": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/CalendarFields"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      },
+      "reminder": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/ReminderFields"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      },
+      "note": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/NoteFields"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      },
+      "corrections": {
+        "items": {
+          "$ref": "#/$defs/Correction"
+        },
+        "title": "Corrections",
+        "type": "array"
+      }
+    },
+    "required": [
+      "ts",
+      "call_id"
+    ],
+    "title": "IntentSnapshot",
+    "type": "object"
+  },
+  "plan.created": {
+    "$defs": {
+      "Action": {
+        "properties": {
+          "action_id": {
+            "title": "Action Id",
+            "type": "string"
+          },
+          "kind": {
+            "title": "Kind",
+            "type": "string"
+          },
+          "strategy": {
+            "enum": [
+              "intent_prefill",
+              "gui",
+              "panel",
+              "content"
+            ],
+            "title": "Strategy",
+            "type": "string"
+          },
+          "payload": {
+            "additionalProperties": true,
+            "title": "Payload",
+            "type": "object"
+          },
+          "inverse": {
+            "$ref": "#/$defs/Inverse"
+          }
+        },
+        "required": [
+          "action_id",
+          "kind",
+          "strategy",
+          "inverse"
+        ],
+        "title": "Action",
+        "type": "object"
+      },
+      "Inverse": {
+        "properties": {
+          "kind": {
+            "title": "Kind",
+            "type": "string"
+          },
+          "payload": {
+            "additionalProperties": true,
+            "title": "Payload",
+            "type": "object"
+          }
+        },
+        "required": [
+          "kind"
+        ],
+        "title": "Inverse",
+        "type": "object"
+      }
+    },
+    "properties": {
+      "v": {
+        "default": 1,
+        "title": "V",
+        "type": "integer"
+      },
+      "type": {
+        "const": "plan.created",
+        "default": "plan.created",
+        "title": "Type",
+        "type": "string"
+      },
+      "ts": {
+        "title": "Ts",
+        "type": "string"
+      },
+      "call_id": {
+        "title": "Call Id",
+        "type": "string"
+      },
+      "plan_id": {
+        "title": "Plan Id",
+        "type": "string"
+      },
+      "revision": {
+        "title": "Revision",
+        "type": "integer"
+      },
+      "actions": {
+        "items": {
+          "$ref": "#/$defs/Action"
+        },
+        "title": "Actions",
+        "type": "array"
+      }
+    },
+    "required": [
+      "ts",
+      "call_id",
+      "plan_id",
+      "revision",
+      "actions"
+    ],
+    "title": "PlanCreated",
+    "type": "object"
+  },
+  "exec.request": {
+    "properties": {
+      "v": {
+        "default": 1,
+        "title": "V",
+        "type": "integer"
+      },
+      "id": {
+        "title": "Id",
+        "type": "string"
+      },
+      "op": {
+        "enum": [
+          "tap",
+          "swipe",
+          "text",
+          "keyevent",
+          "screencap",
+          "am_start",
+          "content_query",
+          "content_delete",
+          "wait"
+        ],
+        "title": "Op",
+        "type": "string"
+      },
+      "x": {
+        "anyOf": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "X"
+      },
+      "y": {
+        "anyOf": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Y"
+      },
+      "x1": {
+        "anyOf": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "X1"
+      },
+      "y1": {
+        "anyOf": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Y1"
+      },
+      "x2": {
+        "anyOf": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "X2"
+      },
+      "y2": {
+        "anyOf": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Y2"
+      },
+      "duration_ms": {
+        "anyOf": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Duration Ms"
+      },
+      "text": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Text"
+      },
+      "keycode": {
+        "anyOf": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Keycode"
+      },
+      "action": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Action"
+      },
+      "data": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Data"
+      },
+      "extras": {
+        "anyOf": [
+          {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Extras"
+      },
+      "uri": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Uri"
+      },
+      "projection": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Projection"
+      },
+      "title": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Title"
+      },
+      "dtstart": {
+        "anyOf": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Dtstart"
+      },
+      "wait_ms": {
+        "anyOf": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Wait Ms"
+      }
+    },
+    "required": [
+      "id",
+      "op"
+    ],
+    "title": "ExecRequest",
+    "type": "object"
+  },
+  "exec.result": {
+    "properties": {
+      "v": {
+        "default": 1,
+        "title": "V",
+        "type": "integer"
+      },
+      "id": {
+        "title": "Id",
+        "type": "string"
+      },
+      "ok": {
+        "title": "Ok",
+        "type": "boolean"
+      },
+      "width": {
+        "default": 0,
+        "title": "Width",
+        "type": "integer"
+      },
+      "height": {
+        "default": 0,
+        "title": "Height",
+        "type": "integer"
+      },
+      "screenshot_png_b64": {
+        "default": "",
+        "title": "Screenshot Png B64",
+        "type": "string"
+      },
+      "stdout": {
+        "default": "",
+        "title": "Stdout",
+        "type": "string"
+      },
+      "latency_ms": {
+        "default": 0,
+        "title": "Latency Ms",
+        "type": "integer"
+      },
+      "error": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Error"
+      }
+    },
+    "required": [
+      "id",
+      "ok"
+    ],
+    "title": "ExecResult",
+    "type": "object"
+  },
+  "agent.step": {
+    "$defs": {
+      "Pixel": {
+        "properties": {
+          "x": {
+            "title": "X",
+            "type": "integer"
+          },
+          "y": {
+            "title": "Y",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "x",
+          "y"
+        ],
+        "title": "Pixel",
+        "type": "object"
+      }
+    },
+    "properties": {
+      "v": {
+        "default": 1,
+        "title": "V",
+        "type": "integer"
+      },
+      "type": {
+        "const": "agent.step",
+        "default": "agent.step",
+        "title": "Type",
+        "type": "string"
+      },
+      "ts": {
+        "title": "Ts",
+        "type": "string"
+      },
+      "call_id": {
+        "title": "Call Id",
+        "type": "string"
+      },
+      "action_id": {
+        "title": "Action Id",
+        "type": "string"
+      },
+      "step_index": {
+        "title": "Step Index",
+        "type": "integer"
+      },
+      "model": {
+        "title": "Model",
+        "type": "string"
+      },
+      "tool": {
+        "title": "Tool",
+        "type": "string"
+      },
+      "args": {
+        "additionalProperties": true,
+        "title": "Args",
+        "type": "object"
+      },
+      "pixel": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/Pixel"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      },
+      "screenshot_width": {
+        "anyOf": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Screenshot Width"
+      },
+      "screenshot_height": {
+        "anyOf": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Screenshot Height"
+      },
+      "ok": {
+        "default": true,
+        "title": "Ok",
+        "type": "boolean"
+      },
+      "latency_ms": {
+        "default": 0,
+        "title": "Latency Ms",
+        "type": "integer"
+      },
+      "error": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Error"
+      }
+    },
+    "required": [
+      "ts",
+      "call_id",
+      "action_id",
+      "step_index",
+      "model",
+      "tool"
+    ],
+    "title": "AgentStep",
+    "type": "object"
+  },
+  "action.finished": {
+    "properties": {
+      "v": {
+        "default": 1,
+        "title": "V",
+        "type": "integer"
+      },
+      "type": {
+        "const": "action.finished",
+        "default": "action.finished",
+        "title": "Type",
+        "type": "string"
+      },
+      "ts": {
+        "title": "Ts",
+        "type": "string"
+      },
+      "call_id": {
+        "title": "Call Id",
+        "type": "string"
+      },
+      "action_id": {
+        "title": "Action Id",
+        "type": "string"
+      },
+      "ok": {
+        "title": "Ok",
+        "type": "boolean"
+      },
+      "stop": {
+        "enum": [
+          "answer",
+          "step_budget",
+          "executor_error"
+        ],
+        "title": "Stop",
+        "type": "string"
+      },
+      "steps": {
+        "title": "Steps",
+        "type": "integer"
+      },
+      "answer": {
+        "default": "",
+        "title": "Answer",
+        "type": "string"
+      }
+    },
+    "required": [
+      "ts",
+      "call_id",
+      "action_id",
+      "ok",
+      "stop",
+      "steps"
+    ],
+    "title": "ActionFinished",
+    "type": "object"
+  },
+  "verify.result": {
+    "$defs": {
+      "CalendarRow": {
+        "properties": {
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "dtstart": {
+            "title": "Dtstart",
+            "type": "integer"
+          },
+          "dtend": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Dtend"
+          },
+          "eventLocation": {
+            "default": "",
+            "title": "Eventlocation",
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "dtstart"
+        ],
+        "title": "CalendarRow",
+        "type": "object"
+      }
+    },
+    "properties": {
+      "v": {
+        "default": 1,
+        "title": "V",
+        "type": "integer"
+      },
+      "type": {
+        "const": "verify.result",
+        "default": "verify.result",
+        "title": "Type",
+        "type": "string"
+      },
+      "ts": {
+        "title": "Ts",
+        "type": "string"
+      },
+      "call_id": {
+        "title": "Call Id",
+        "type": "string"
+      },
+      "action_id": {
+        "title": "Action Id",
+        "type": "string"
+      },
+      "method": {
+        "title": "Method",
+        "type": "string"
+      },
+      "uri": {
+        "default": "",
+        "title": "Uri",
+        "type": "string"
+      },
+      "matched": {
+        "title": "Matched",
+        "type": "boolean"
+      },
+      "row": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/CalendarRow"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      }
+    },
+    "required": [
+      "ts",
+      "call_id",
+      "action_id",
+      "method",
+      "matched"
+    ],
+    "title": "VerifyResult",
+    "type": "object"
+  },
+  "confirm.request": {
+    "$defs": {
+      "ConfirmItem": {
+        "properties": {
+          "action_id": {
+            "title": "Action Id",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "summary": {
+            "title": "Summary",
+            "type": "string"
+          }
+        },
+        "required": [
+          "action_id",
+          "label",
+          "summary"
+        ],
+        "title": "ConfirmItem",
+        "type": "object"
+      }
+    },
+    "properties": {
+      "v": {
+        "default": 1,
+        "title": "V",
+        "type": "integer"
+      },
+      "type": {
+        "const": "confirm.request",
+        "default": "confirm.request",
+        "title": "Type",
+        "type": "string"
+      },
+      "card_id": {
+        "title": "Card Id",
+        "type": "string"
+      },
+      "call_id": {
+        "title": "Call Id",
+        "type": "string"
+      },
+      "items": {
+        "items": {
+          "$ref": "#/$defs/ConfirmItem"
+        },
+        "title": "Items",
+        "type": "array"
+      }
+    },
+    "required": [
+      "card_id",
+      "call_id",
+      "items"
+    ],
+    "title": "ConfirmRequest",
+    "type": "object"
+  },
+  "confirm.decision": {
+    "properties": {
+      "v": {
+        "default": 1,
+        "title": "V",
+        "type": "integer"
+      },
+      "type": {
+        "const": "confirm.decision",
+        "default": "confirm.decision",
+        "title": "Type",
+        "type": "string"
+      },
+      "card_id": {
+        "title": "Card Id",
+        "type": "string"
+      },
+      "decision": {
+        "enum": [
+          "confirm",
+          "undo_reminder"
+        ],
+        "title": "Decision",
+        "type": "string"
+      }
+    },
+    "required": [
+      "card_id",
+      "decision"
+    ],
+    "title": "ConfirmDecision",
+    "type": "object"
+  },
+  "ledger.entry": {
+    "properties": {
+      "v": {
+        "default": 1,
+        "title": "V",
+        "type": "integer"
+      },
+      "type": {
+        "const": "ledger.entry",
+        "default": "ledger.entry",
+        "title": "Type",
+        "type": "string"
+      },
+      "entry_id": {
+        "title": "Entry Id",
+        "type": "string"
+      },
+      "action_id": {
+        "title": "Action Id",
+        "type": "string"
+      },
+      "status": {
+        "enum": [
+          "applied",
+          "reverted"
+        ],
+        "title": "Status",
+        "type": "string"
+      },
+      "forward_kind": {
+        "title": "Forward Kind",
+        "type": "string"
+      },
+      "inverse_kind": {
+        "title": "Inverse Kind",
+        "type": "string"
+      }
+    },
+    "required": [
+      "entry_id",
+      "action_id",
+      "status",
+      "forward_kind",
+      "inverse_kind"
+    ],
+    "title": "LedgerEntry",
+    "type": "object"
+  }
+}

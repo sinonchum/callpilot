@@ -2,7 +2,7 @@
 
 本文把 [PRD.md](PRD.md) 拆成可以并行开工的模块。产品行为以 PRD 为准；消息字段以本文 [接口契约](#contracts) 为准。两边冲突时，先改文档再写代码。
 
-赛前不写产品代码（活动规则尚未核实，见 PRD 假设表）。本文的目录只是周六上午要建的仓库布局。JSON 示例可以直接抄进测试 fixture。
+活动是否允许赛前代码仍未核实。团队已经决定先把**不依赖 root 手机、也不依赖付费 key** 的笔记本侧写进仓库，让周六可以直接接真机。手机推流和真实 adb 仍是 stub，见 [phone/README.md](../phone/README.md)。规则若要求现场重写，以工作人员的说法为准，这份 mock 链路是起点而不是秘密预做的演示。
 
 四人分工对应方案原文：
 
@@ -17,25 +17,34 @@
 
 ## 建议的仓库布局
 
-周六再建这些目录，现在不要加代码：
+目录已经按这个布局建好。带 `*` 的是可离线运行的实现；手机和真实 adb 只有 stub：
 
 ```text
-phone/app/                 # Kotlin。PCM 推流、录音指示
+phone/app/                 # stub。PCM 帧说明在 phone/README.md，没有 Gradle
 laptop/
-  orchestrator/            # Python asyncio 入口。只做接线
-  stt/                     # Gladia 会话
-  intent/                  # patch reducer，纯函数
-  planner/                 # 快照 → 动作计划，纯函数
-  confirm/                 # 确认卡状态与动作账本
-  gui/                     # Holo 循环
-  verify/                  # 期望槽位 vs 日历行，纯函数
-  executor/                # adb / su 的薄封装
-  contracts/               # 从本文抄出的 JSON Schema
-  fixtures/                # 台词、截图、Holo 回放
+  orchestrator/            # 接线、mock 演示、可选 WebSocket 回放
+  stt/                     # Gladia 初始化 + 录好的转写流；真 WebSocket 推流未接
+  intent/                  # 规则抽取器（默认）+ 可选文本模型
+  planner/                 # 快照 → 动作计划
+  confirm/                 # 确认卡与撤销
+  gui/                     # Holo 循环；无 key 时回放点击脚本
+  verify/                  # 日历行比对
+  executor/                # FakeExecutor 默认；adb 命令只拼不跑
+  contracts/               # Pydantic 模型与 schema/v1.json
+  fixtures/                # 剧本、Holo 脚本、面板回放
   tests/
-panel/                     # Vite + React + TypeScript
-demo/                      # 幻灯片提纲、备份视频。禁止放 key
+panel/                     # Vite + React。回放 fixtures/panel_replay.jsonl
+demo/                      # 幻灯片还没有。禁止放 key
 ```
+
+离线验收：
+
+```bash
+cd laptop && python3 -m pip install -e ".[dev]" && python3 -m pytest && python3 -m orchestrator.demo
+cd panel && npm ci && npm test && npm run build
+```
+
+`python3 -m orchestrator.demo` 退出码 0，并打印 `[ok] POC at 16:00, reminder undone`。没设 key 时不会访问网络。设了 `CALLPILOT_FORCE_MOCK=1` 也一样。
 
 规则：每人只写自己的目录。跨模块只通过下面的消息。集成改动集中在 `laptop/orchestrator/`，由队友 B 合并。`contracts/` 在周六 10:30 冻结，之后改字段要同时改 fixture 和本文。
 
@@ -108,7 +117,7 @@ Holo 循环和意图 reducer 不在音频探针的下游，周六中午就可以
 
 时间用 `Europe/Paris`。块边界与方案一致，块内拆到大约一小时。00:00 必须停手睡觉。
 
-### 赛前（不写产品代码）
+### 赛前探针（手机和 key，不把真机当成已经跑通）
 
 | 时间 | 做什么 | 完成标准 |
 | --- | --- | --- |
