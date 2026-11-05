@@ -41,7 +41,7 @@ The note is text on the confirm card. Nothing writes a notes app. The deck "remi
 
 ## Architecture
 
-Solid arrows are what `python3 -m orchestrator.demo` runs. The phone and the live APIs are not on that path.
+Solid arrows are the demo path with no API keys. The phone link is not connected. The demo always replays the Gladia fixture, even if `GLADIA_API_KEY` is set. Intent and Holo stay on the mock unless their keys are set and `CALLPILOT_FORCE_MOCK` is not `1`.
 
 ```mermaid
 flowchart TD
