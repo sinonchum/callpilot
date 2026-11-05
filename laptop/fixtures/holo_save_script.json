@@ -1,0 +1,4 @@
+[
+  {"tool": "click", "args": {"element": "the Save button", "x": 900, "y": 100}},
+  {"tool": "answer", "args": {"content": "Saved."}}
+]
